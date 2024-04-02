@@ -16,7 +16,8 @@ LINK_ENTITY_TO_CLASS(trigger_print, CTriggerPrint);
 
 void CTriggerPrint::Spawn()
 {
-	// do nothing here 
+	if (!pev->message)
+		UTIL_Remove(this);
 }
 
 void CTriggerPrint::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
