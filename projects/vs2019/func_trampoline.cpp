@@ -12,7 +12,7 @@ public:
 	void Precache();
 
 	void BounceSound();
-
+	
 	static const char* pBounceSounds[];
 };
 
@@ -49,13 +49,13 @@ void CFuncTrampoline::Touch(CBaseEntity *pOther)
 	using namespace std;
 
 	Vector position = pOther->pev->origin + (pOther->pev->maxs + pOther->pev->mins) * 0.5f;
-    //ExplosionCreate(position, pev->angles, edict(), 50, false);
 	Vector velocity = pOther->pev->velocity;
 
 	// Meeting a minimum vertical speed to jump and making sure that only the bottom of the \
 	entity's bounding box can trigger the jump
-	if (velocity.z < -128.0f && pev->origin.z <= position.z - pev->size.z * 0.9f)
+	if (velocity.z < -128.0f *2.0f && pev->origin.z <= position.z - pev->size.z * 0.9f)
 	{
+		// ExplosionCreate(position, pev->angles, edict(), 25, false);
 		int iViewPunchDir = 1;
 		if (fabs(velocity.x) > 128.0f || fabs(velocity.x) > 128.0f)
 			iViewPunchDir = -1;

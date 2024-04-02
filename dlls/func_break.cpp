@@ -27,6 +27,7 @@
 #include "func_break.h"
 #include "decals.h"
 #include "explode.h"
+#include <algorithm>
 
 // =================== FUNC_Breakable ==============================================
 
@@ -502,6 +503,10 @@ void CBreakable::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 
 void CBreakable::TraceAttack(entvars_t* pevAttacker, float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType)
 {
+	// Move object in relation to the damage
+	Vector position = pevAttacker->origin + (pevAttacker->maxs + pevAttacker->mins) * 0.5f;
+	pev->velocity = pev->velocity + vecDir * flDamage * float(1 << 2);
+
 	// random spark if this is a 'computer' object
 	if (RANDOM_LONG(0, 1))
 	{
@@ -952,6 +957,15 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	// Is entity standing on this pushable ?
 	if (FBitSet(pevToucher->flags, FL_ONGROUND) && pevToucher->groundentity && VARS(pevToucher->groundentity) == pev)
 	{
+		// Move entity with this pushable
+		/*
+		Vector entPosition = pevToucher->origin + (pevToucher->maxs + pevToucher->mins) * 0.5f;
+		Vector selfPosition = pev->origin + (pev->maxs + pev->mins) * 0.5f;
+		entPosition.x = (entPosition.x - selfPosition.x);
+		entPosition.y = (entPosition.y - selfPosition.y);
+		pevToucher->origin = entPosition - (pevToucher->maxs + pevToucher->mins) * 0.5f;
+		*/
+
 		// Only push if floating
 		if (pev->waterlevel > 0)
 			pev->velocity.z += pevToucher->velocity.z * 0.1;
@@ -984,8 +998,9 @@ void CPushable::Move(CBaseEntity* pOther, bool push)
 	else
 		factor = 0.25;
 
-	pev->velocity.x += pevToucher->velocity.x * factor;
-	pev->velocity.y += pevToucher->velocity.y * factor;
+	// Instead of adding the toucher velocity to this entity, jsut set the same velocity, otherwise this entity could get slingshotted into oblivion
+	pev->velocity.x = pevToucher->velocity.x * factor;
+	pev->velocity.y = pevToucher->velocity.y * factor;
 
 	float length = sqrt(pev->velocity.x * pev->velocity.x + pev->velocity.y * pev->velocity.y);
 	if (push && (length > MaxSpeed()))
@@ -1024,7 +1039,7 @@ void CPushable::StopSound()
 
 bool CPushable::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
-	if ((pev->spawnflags & SF_PUSH_BREAKABLE) != 0)
+	if ((pev->spawnflags & SF_PUSH_BREAKABLE) != 0) 
 		return CBreakable::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 
 	return true;

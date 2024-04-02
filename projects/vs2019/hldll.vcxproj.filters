@@ -46,6 +46,9 @@
     <Filter Include="Header Files\public">
       <UniqueIdentifier>{ccda2445-0302-44ae-a537-be89f5811329}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\dlls\hachiko">
+      <UniqueIdentifier>{80b13a7e-f18d-406d-ac6b-02f99656cc20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\dlls\aflock.cpp">
@@ -366,11 +369,11 @@
     <ClCompile Include="..\..\public\interface.cpp">
       <Filter>Source Files\public</Filter>
     </ClCompile>
-    <ClCompile Include="trigger_print.cpp">
-      <Filter>Source Files\dlls</Filter>
-    </ClCompile>
     <ClCompile Include="func_trampoline.cpp">
-      <Filter>Source Files\dlls</Filter>
+      <Filter>Source Files\dlls\hachiko</Filter>
+    </ClCompile>
+    <ClCompile Include="trigger_print.cpp">
+      <Filter>Source Files\dlls\hachiko</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

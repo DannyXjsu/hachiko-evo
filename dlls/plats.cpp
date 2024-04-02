@@ -389,7 +389,7 @@ void CPlatTrigger::Touch(CBaseEntity* pOther)
 	// Ignore touches by non-players
 	entvars_t* pevToucher = pOther->pev;
 	if (!FClassnameIs(pevToucher, "player"))
-		return;
+		return;	
 
 	// Ignore touches by corpses
 	if (!pOther->IsAlive())

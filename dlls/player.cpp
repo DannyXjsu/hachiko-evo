@@ -1493,7 +1493,7 @@ void CBasePlayer::PlayerUse()
 		{
 			if ((caps & FCAP_CONTINUOUS_USE) != 0)
 				m_afPhysicsFlags |= PFLAG_USING;
-
+			
 			pObject->Use(this, this, USE_SET, 1);
 		}
 		// UNDONE: Send different USE codes for ON/OFF.  Cache last ONOFF_USE object to send 'off' if you turn away
@@ -1557,6 +1557,11 @@ void CBasePlayer::Jump()
 	if (pevGround && (pevGround->flags & FL_CONVEYOR) != 0)
 	{
 		pev->velocity = pev->velocity + pev->basevelocity;
+	}
+	else if (pevGround)
+	{
+		// TODO: maintain momentum?
+		//pev->velocity = pev->velocity + pevGround->velocity;
 	}
 }
 
@@ -2541,8 +2546,8 @@ void CBasePlayer::PostThink()
 			// Did he hit the world or a non-moving entity?
 			// BUG - this happens all the time in water, especially when
 			// BUG - water has current force
-			// if ( !pev->groundentity || VARS(pev->groundentity)->velocity.z == 0 )
-			// EMIT_SOUND(ENT(pev), CHAN_BODY, "player/pl_wade1.wav", 1, ATTN_NORM);
+			//if ( !pev->groundentity || VARS(pev->groundentity)->velocity.z == 0 )
+			//EMIT_SOUND(ENT(pev), CHAN_BODY, "player/pl_wade1.wav", 1, ATTN_NORM);
 		}
 		else if (m_flFallVelocity > PLAYER_MAX_SAFE_FALL_SPEED)
 		{ // after this point, we start doing damage
